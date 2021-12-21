@@ -25,6 +25,7 @@ Q55
 A66
 ```
 generate_plots (if set to True)- The program will generate sets of 16 plots for you to visualize the Reff plot to choice which amino acids you want to selectively run CPMG_Fit on. It will also display Rex and relative error %. If False, the program will not generate plots. 
+
 generate_excel_output_file (if set to True)- The program will generate an output file containing the CPMG_Fit output files in a vertical column that can easily be plotted in excel (in case the user wishes to plot the Reff themselves)
 
 selective_groups (if set to True)- The program will read a selective group file to only generate CPMG_Fit files for the amino acids specified in the file. 
