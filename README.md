@@ -29,7 +29,7 @@ generate_excel_output_file (if set to True)- The program will generate an output
 selective_groups (if set to True)- The program will read a selective group file to only generate CPMG_Fit files for the amino acids specified in the file. 
 
 ***Recommended usage***
-1. Change paremters to fit your experimentation
+1. Change paremters to fit your experimental setup
 2. Set generate_plots to True and selective_groups to False, set directory_pathway to 'data/all'
 3. Check plots of all peaks, and pick the ones that appear to have good Rex
 4. Create a file specifying these amino acids, then set selective_groups to True, set directory_pathway to 'data/selective' run program again
