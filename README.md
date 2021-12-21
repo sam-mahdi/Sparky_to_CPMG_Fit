@@ -34,5 +34,5 @@ selective_groups (if set to True)- The program will read a selective group file 
 1. Change paremters to fit your experimental setup
 2. Set generate_plots to True and selective_groups to False, set directory_pathway to 'data/all'
 3. Check plots of all peaks, and pick the ones that appear to have good Rex
-4. Create a file specifying these amino acids, then set selective_groups to True, set directory_pathway to 'data/selective' run program again
+4. Create a txt file specifying these amino acids, then set selective_groups to True, set directory_pathway to 'data/selective' run program again
 5. You now have CPMG_Fit files for all your amino acids, and the ones you selectively want to run
