@@ -4,7 +4,7 @@ Converts SPARKY peaklist files to CPMG_Fit format
 Modify adjustable parameters. 
 
 1. peak_lists- This parameter is a list of strings containing all the peaklist files. ***Must be in order of increasing CPMG frequency***
-The files must be strings (surrounded by quotation marks), and closed by brackets. I.E. ['file1.txt', 'file2.txt']
+The files must be strings (surrounded by quotation marks), and closed by brackets. I.E. ['file1.txt', 'file2.txt'] ***ensure peaklists are in the same directory as the script***
 2. time_value- This is the t_value from the procpar file [float input]
 3. error_min- The lowest possible error. Any relative error value that is below this, will be set to this value by default [float input]
 4. time_zero- This is the very first spectra in the CPMG sequence, standard NHSQC [string input]
@@ -17,7 +17,7 @@ The files must be strings (surrounded by quotation marks), and closed by bracket
 11. quantum_type- The type of CPMG experiment, this is for CPMG_Fit (e.g. single-quantum is S, double-quantum is D, etc.) [string input]
 12. directory_pathway= The pathway your CPMG_Fit files will be created [string input]
 13. font_size- The font size for the plot labels [intger input]
-14. selective_group_file- If you wish to only generate CPMG_Fit files for specific residues, you may define them in a text file, with one column labeling the amino acid type, and residue number [string input]
+14. selective_group_file- If you wish to only generate CPMG_Fit files for specific residues, you may define them in a text file, with one column labeling the amino acid type, and residue number [string input] ***ensure selective text file is in the same directory as script***
 I.E.
 ```
 G34
