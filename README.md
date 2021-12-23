@@ -38,6 +38,7 @@ A66
 20.Recommended Peaks (if set to True) - The program will filter and output amino acids with Rex and Reff values that are outside the standard deviation of the average. 
 21.only_show_good_reff_and_rex (if set to True) -  The program will filter and output amino acids with BOTH Rex and Reff values that are outside the standard deviation of the average.
 22.plot_rex_reff (if set to True)- The program will plot the Rex and Reff values, with the average and standard deviation
+23. generate_excel_rex_reff_plot_file (if set to True) - The program will output files that can be used in excel to plot the Rex, Reff, average, and standard deviation
 
 ***Recommended usage***
 1. Change paremters to fit your experimental setup
