@@ -22,6 +22,9 @@ plot_csb=True
 plot_csb_on_pdb=False
 show_values_above_std=True
 
+cval_file='full.dat'
+cs_file='full.res'
+
 def display_toggle(label_list):
     display_list=[]
     display=label_list[0].split()
@@ -46,7 +49,7 @@ def plot_cpmg_fit():
     counter=0
     plot_counter_rows=-1
     plot_counter_columns=0
-    with open('full_plot_output.txt') as output_file:
+    with open(cval_file) as output_file:
         fig,axs=plt.subplots(4,4)
         for lines in output_file:
             if lines.split() == []:
@@ -126,7 +129,7 @@ def plot_cpmg_fit():
     plt.show()
 
 def obtain_csb():
-    with open('full_exchange_output.txt') as output_file:
+    with open(cs_file) as output_file:
         only_cs_b=[]
         for lines in output_file:
             if lines.split() == []:
