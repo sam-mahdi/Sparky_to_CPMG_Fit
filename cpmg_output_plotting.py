@@ -233,7 +233,7 @@ def pymol_csb():
         counter=counter+1
         cmd.cartoon("automatic",mol)
         cmd.spectrum("b","grey blue red", "%s and n. CA " %mol)
-        cmd.ramp_new("color_bar",mol,[min(bfacts),max(bfacts)],["grey","blue","red"]
+        cmd.ramp_new("color_bar",mol,[min(bfacts),max(bfacts)],["grey","blue","red"])
         cmd.recolor()
 
 def main():
