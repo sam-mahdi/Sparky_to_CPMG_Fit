@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import math
+from pymol import cmd, stored, math
+import pymol
 
 
 """Display Label"""
@@ -10,8 +12,8 @@ Atom_Coherence=False
 font_size=8
 
 """For pdb plotting"""
-pdb_file=''
-startaa=''
+pdb_file='5yuf.pdb'
+startaa='50'
 
 outlier_removed_percent=1.1
 
@@ -201,8 +203,9 @@ def pymol_csb():
     csb_only=[]
     cs_b=obtain_csb()
     pymol.finish_launching()
+    cmd.load(pdb_file)
     mol=pdb_file[0:-4]
-    for lines in csb_only:
+    for lines in cs_b:
         csb_only.append(lines.strip().split()[4])
     obj=cmd.get_object_list(mol)
     cmd.alter(mol,"b=-1.0")
@@ -215,6 +218,7 @@ def pymol_csb():
         counter=counter+1
         cmd.cartoon("automatic",mol)
         cmd.spectrum("b","grey blue red", "%s and n. CA " %mol)
+        cmd.ramp_new("color_bar",mol,[min(bfacts),max(bfacts)],["grey","blue","red"]
         cmd.recolor()
 
 def main():
