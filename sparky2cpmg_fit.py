@@ -20,11 +20,15 @@ quantum_type='S'
 directory_pathway='data/all'
 font_size=8
 selective_group_file='selective_groups.txt'
+outlier_removed_percent=1.1
+rex_reff_plot_xaxis_label_fontsize=6
 
 generate_plots=False
 generate_excel_output_file=False
 selective_groups=False
-
+recommended_peaks=True
+only_show_good_reff_and_rex=True
+plot_rex_reff=True
 
 """SCRIPT START"""
 
@@ -100,7 +104,7 @@ def create_errors():
                 duplicate_1_index=dup_index[0]
                 duplicate_2_index=dup_index[1]
                 average=(float(lines.split()[duplicate_1_index])+float(lines.split()[duplicate_2_index]))/2
-                standard_deviation=math.sqrt(((float(lines.split()[duplicate_1_index])-average)**2)+((float(lines.split()[duplicate_2_index])-average)**2))
+                standard_deviation=math.sqrt((((float(lines.split()[duplicate_1_index])-average)**2)+((float(lines.split()[duplicate_2_index])-average)**2))/2)
                 rel_error=standard_deviation/average
                 dup_list.append(rel_error)
             avg_rel_error=sum(dup_list)/len(dup_list)
@@ -255,6 +259,82 @@ def selective_generator():
                 cpmg_input.write(f'read {directory_pathway}/{peaks}_{identifier}.txt d {residue.group(0)} {quantum_type} {labeling} {temperature} {spectrometer_frequency} {time_value} @ c\n')
         cpmg_input.write(f'\nset m 3\nset k @ 0 500 u\nset k @ 1 0 f\nset k @ 2 0 f\nset p @ 0 0.98 f\nset p @ 1 0.02 u\nset c @ {labeling} 0 0 0 f\nset c @ {labeling} 1 0 1.0 u\nset c @ {labeling} 2 0 0 f\nset r @ @ @ @ @ @ 10 u g\nwrite > p\n min\nwrite > p\n write full.res p\n write full.dat d\n backup full.bk\n')
 
+
+def average_and_std(average_list):
+    standard_deviation_list=[]
+    sum_average=sum(average_list)/len(average_list)
+    for values in average_list:
+        deviation=((float(values)-sum_average)**2)+((float(values)-sum_average)**2)
+        standard_deviation_list.append(deviation)
+    standard_deviation=math.sqrt(sum(standard_deviation_list)/len(standard_deviation_list))
+    std_up=sum_average+standard_deviation
+    std_down=sum_average-standard_deviation
+    outliers_removed_average_list=[]
+    outliers_removed_standard_deviation_list=[]
+    for averages in average_list:
+        if averages < (std_up*outlier_removed_percent) and averages > (std_down*outlier_removed_percent):
+            outliers_removed_average_list.append(averages)
+    outliers_removed_sum_average=sum(outliers_removed_average_list)/len(outliers_removed_average_list)
+    for new_averages in outliers_removed_average_list:
+        new_deviation=((float(new_averages)-outliers_removed_sum_average)**2)+((float(new_averages)-outliers_removed_sum_average)**2)
+        outliers_removed_standard_deviation_list.append(new_deviation)
+    outliers_removed_standard_deviation=math.sqrt(sum(outliers_removed_standard_deviation_list)/len(outliers_removed_standard_deviation_list))
+    outliers_removed_std_up=outliers_removed_sum_average+outliers_removed_standard_deviation
+    return outliers_removed_sum_average, outliers_removed_std_up
+
+
+def smart_peak_picking():
+    filtered_rex=[]
+    average_list=[]
+    for rex_values in duplicate_rex:
+        average_rex=sum([float(i) for i in rex_values])/len(rex_values)
+        average_list.append(average_rex)
+    outliers_removed_sum_average,outliers_removed_std_up=average_and_std(average_list)
+    for rex_values2,peaks in zip(duplicate_rex,list_of_peaks):
+        average_rex=sum([float(i) for i in rex_values2])/len(rex_values2)
+        if average_rex > outliers_removed_std_up:
+            filtered_rex.append(f'{peaks} {average_rex}')
+            if only_show_good_reff_and_rex is False:
+                print('Good Reff',peaks,average_rex)
+    return filtered_rex,average_list,outliers_removed_sum_average,outliers_removed_std_up
+
+def smart_peak_picking_reff():
+    filtered_reff_list=[]
+    reff_list=[]
+    for rex_values in duplicate_rex:
+        reff=[float(i) for i in rex_values][0]-[float(i) for i in rex_values][-1]
+        reff_list.append(reff)
+    outliers_removed_sum_average,outliers_removed_std_up=average_and_std(reff_list)
+    for rex_values2,peaks in zip(duplicate_rex,list_of_peaks):
+        filtered_reff=[float(i) for i in rex_values2][0]-[float(i) for i in rex_values2][-1]
+        if filtered_reff > outliers_removed_std_up:
+            filtered_reff_list.append(f'{peaks} {filtered_reff}')
+            if only_show_good_reff_and_rex is False:
+                print('Good Rex',peaks,filtered_reff)
+    return filtered_reff_list,reff_list,outliers_removed_sum_average,outliers_removed_std_up
+
+def plot_rex_reff_bar_graph(rex_list,reff_list,average_rex,rex_std_up,average_reff,reff_std_up):
+    import matplotlib.pyplot as plt
+    label_list=[]
+    for labels in list_of_peaks:
+        residue_search=re.search('\d+',labels)
+        label_list.append(residue_search.group(0))
+    fig,(ax1,ax2) = plt.subplots(1,2)
+    ax1.bar(label_list,rex_list,width=0.3)
+    ax1.set_title('Reff Plot')
+    ax1.plot(label_list,[average_rex]*len(label_list),color='r',label='average')
+    ax1.plot(label_list,[rex_std_up]*len(label_list),color='g',label='standard_deviation')
+    ax2.bar(label_list,reff_list,width=0.3)
+    ax2.plot(label_list,[average_reff]*len(label_list),color='r',label='average')
+    ax2.plot(label_list,[reff_std_up]*len(label_list),color='g',label='standard_deviation')
+    ax2.set_title('Rex Plot')
+    ax1.legend(loc='upper right')
+    ax2.legend(loc='upper right')
+    ax1.tick_params(axis='x',labelsize=rex_reff_plot_xaxis_label_fontsize)
+    ax2.tick_params(axis='x',labelsize=rex_reff_plot_xaxis_label_fontsize)
+    plt.show()
+
+
 working_directory=os.getcwd()
 list_of_peaks=create_peaklist()
 peak_height_list=organize_peak_heights()
@@ -263,6 +343,16 @@ errors,rel_error_for_plotting=create_errors()
 duplicate_rex=duplicate_rex_combined()
 duplicate_errors=duplicate_errors_combined()
 modify_frequency_list()
+if recommended_peaks is True:
+    filtered_rex,rex_list,average_rex,rex_std_up=smart_peak_picking()
+    filtered_reff,reff_list,average_reff,reff_std_up=smart_peak_picking_reff()
+    for values in filtered_rex:
+        for values2 in filtered_reff:
+            if values.split()[0] == values2.split()[0]:
+                print(f'Good Reff {values} and Rex {values2}')
+    if plot_rex_reff is True:
+        plot_rex_reff_bar_graph(rex_list,reff_list,average_rex,rex_std_up,average_reff,reff_std_up)
+
 if selective_groups is True:
     selective_generator()
 else:
