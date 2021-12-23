@@ -38,9 +38,10 @@ A66
 20.Recommended Peaks (if set to True) - The program will filter and output amino acids with Rex and Reff values that are outside the standard deviation of the average. 
 21.only_show_good_reff_and_rex (if set to True) -  The program will filter and output amino acids with BOTH Rex and Reff values that are outside the standard deviation of the average.
 22.plot_rex_reff (if set to True)- The program will plot the Rex and Reff values, with the average and standard deviation
+
 ***Recommended usage***
 1. Change paremters to fit your experimental setup
-2. Set generate_plots to True and selective_groups to False, set directory_pathway to 'data/all'
-3. Check plots of all peaks, and pick the ones that appear to have good Rex
+2. Set generate_plots to True, only_show_good_reff_and_rex to True, and selective_groups to False, set directory_pathway to 'data/all'
+3. Check plots of all peaks, compare to the good Reff and Rex, and pick the ones that have good RD profiles
 4. Create a txt file specifying these amino acids, then set selective_groups to True, set directory_pathway to 'data/selective' run program again
 5. You now have CPMG_Fit files for all your amino acids, and the ones you selectively want to run
