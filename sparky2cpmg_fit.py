@@ -28,7 +28,8 @@ generate_excel_output_file=False
 selective_groups=False
 recommended_peaks=True
 only_show_good_reff_and_rex=True
-plot_rex_reff=True
+plot_rex_reff=False
+generate_excel__rex_reff_plot_file=True
 
 """SCRIPT START"""
 
@@ -334,6 +335,14 @@ def plot_rex_reff_bar_graph(rex_list,reff_list,average_rex,rex_std_up,average_re
     ax2.tick_params(axis='x',labelsize=rex_reff_plot_xaxis_label_fontsize)
     plt.show()
 
+def rex_reff_excel_file(rex_list,reff_list,average_rex,rex_std_up,average_reff,reff_std_up):
+    with open('rex_reff_plot_output.txt','w') as output_file:
+        output_file.write(f'Amino Acid\tReff\tReff Average\tReff Upper Stdev\tAmino Acid\tRex\tRex Average\tRex Upper Stdev\n')
+        for labels,rex_values,reff_values,rex_average,std_up_rex,reff_average,std_up_reff in zip(list_of_peaks,rex_list,reff_list,[average_rex]*len(rex_list),[rex_std_up]*len(rex_list),[average_reff]*len(reff_list),[reff_std_up]*len(reff_list)):
+            output_file.write(f'{labels}\t{rex_values}\t{rex_average}\t{std_up_rex}\t{labels}\t{reff_values}\t{reff_average}\t{std_up_reff}\n')
+
+
+
 
 working_directory=os.getcwd()
 list_of_peaks=create_peaklist()
@@ -352,6 +361,8 @@ if recommended_peaks is True:
                 print(f'Good Reff {values} and Rex {values2}')
     if plot_rex_reff is True:
         plot_rex_reff_bar_graph(rex_list,reff_list,average_rex,rex_std_up,average_reff,reff_std_up)
+    if generate_excel__rex_reff_plot_file is True:
+        rex_reff_excel_file(rex_list,reff_list,average_rex,rex_std_up,average_reff,reff_std_up)
 
 if selective_groups is True:
     selective_generator()
