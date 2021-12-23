@@ -210,7 +210,7 @@ def pymol_csb():
     for lines in cs_b:
         count+=1
         residue=int(lines.strip().split()[1])
-        if counter == 1:
+        if count == 1:
             temp_list.append(residue)
             csb_only.append(lines.strip().split()[4])
             continue
