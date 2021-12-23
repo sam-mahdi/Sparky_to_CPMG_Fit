@@ -201,12 +201,27 @@ def csb_plot():
 
 def pymol_csb():
     csb_only=[]
+    temp_list=[]
     cs_b=obtain_csb()
     pymol.finish_launching()
     cmd.load(pdb_file)
     mol=pdb_file[0:-4]
+    count=0
     for lines in cs_b:
+        count+=1
+        residue=int(lines.strip().split()[1])
+        if counter == 1:
+            temp_list.append(residue)
+            csb_only.append(lines.strip().split()[4])
+            continue
+        if residue != temp_list[0]+1:
+            new_residue=temp_list[0]+1
+            while new_residue != residue:
+                csb_only.append(0.0)
+                new_residue+=1
         csb_only.append(lines.strip().split()[4])
+        temp_list.clear()
+        temp_list.append(residue)
     obj=cmd.get_object_list(mol)
     cmd.alter(mol,"b=-1.0")
     counter=int(startaa)
