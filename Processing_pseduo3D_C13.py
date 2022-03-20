@@ -138,7 +138,7 @@ current_directory=os.getcwd() #gets the current directory
 procpar_file='procpar' #procpar file
 all_cpmg_file=glob.glob('*.fid') #finds all the names of the .fid files that contain data
 for cpmg_file in all_cpmg_file: #loop through all the .fid files
-    os.chdir(current_directory+'\\'+cpmg_file) #changes directory to fid file directory
+    os.chdir(current_directory+'/'+cpmg_file) #changes directory to fid file directory
     np_flag=False
     with open(procpar_file) as file: #opens procpar file
         ncync_max,ncync_list,t2=generate_frequences(file)
@@ -146,5 +146,7 @@ for cpmg_file in all_cpmg_file: #loop through all the .fid files
         write_frequency_files(ncync_max,ncync_list,t2,cpmg_frq)
     with open(procpar_file) as file:
         generate_fid_dot_com(file,cpmg_frq,ncync_max)
+        os.system('./fid.com')
     stop_for_next_analysis=input('Click enter for next folder:  ')
     generate_nmr_ft_ps3d_dot_com()
+    os.system('./nmr_ft_ps3d.com')
