@@ -146,7 +146,9 @@ for cpmg_file in all_cpmg_file: #loop through all the .fid files
         write_frequency_files(ncync_max,ncync_list,t2,cpmg_frq)
     with open(procpar_file) as file:
         generate_fid_dot_com(file,cpmg_frq,ncync_max)
+        os.system('chmod u+x fid.com')
         os.system('./fid.com')
     stop_for_next_analysis=input('Click enter for next folder:  ')
     generate_nmr_ft_ps3d_dot_com()
+    os.system('chmod u+x nmr_ft_ps3d.com')
     os.system('./nmr_ft_ps3d.com')
