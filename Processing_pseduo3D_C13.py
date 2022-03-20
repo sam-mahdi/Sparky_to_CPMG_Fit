@@ -109,7 +109,7 @@ def generate_fid_dot_com(file,cpmg_frq,ncync_max):
         fid.write(f'| nmrPipe -fn TP -exch -noord -nohdr \\\n')
         fid.write(f'| nmrPipe -fn ZTP -exch -noord \\\n')
         fid.write(f'| nmrPipe -fn TP -exch -noord -nohdr \\\n')
-        fid.write(f'| pipe2xyz -x -out ./data/test%o3d.fid -ov\n\n')
+        fid.write(f'| pipe2xyz -x -out ./data/test%03d.fid -ov\n\n')
         fid.write(f'sortPlanes.com -in ./data/test%03d.fid -out ./data/test%03d.fid -tau $tauList -title\n\n')
         fid.write(f'nmrDraw -process -in data/test%03d.fid -fid data/test%03d.fid\n\nsleep 5')
 
