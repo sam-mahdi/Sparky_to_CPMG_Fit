@@ -16,7 +16,20 @@ spectrometer_frequency='800'
 labeling='C13'
 identifier='Sam'
 quantum_type='S'
+directory_pathway='data/all'
+font_size=8
+selective_group_file='selective_groups.txt'
+outlier_removed_percent=1.1
+rex_reff_plot_xaxis_label_fontsize=6
 
+generate_plots=False
+generate_excel_output_file=False
+selective_groups=False
+selective_group_plot=False
+recommended_peaks=True
+only_show_good_reff_and_rex=True
+plot_rex_reff=False
+generate_excel__rex_reff_plot_file=True
 
 def extract_parameters():
     index_values=[]
