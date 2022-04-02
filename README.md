@@ -22,9 +22,11 @@ The files must be strings (surrounded by quotation marks), and closed by bracket
 14. selective_group_file- If you wish to only generate CPMG_Fit files for specific residues, you may define them in a text file, with one column labeling the amino acid type, and residue number [string input] ***ensure selective text file is in the same directory as script***
 I.E.
 ```
-G34
-Q55
-A66
+G34N-H
+Q55N-H
+or for methyls 
+V34CG1-HG1
+D45CG2-HG2
 ```
 15. outlier_removed_percent- The average and standard deviation bounds that are included in the calculation. A default 10% (1.1. is applied), this will exclude all vaules that are not within 10% of the average or standard deviation. The user may change this value to whatever they'd like (e.g. 1.2 would be 20%)
 16. rex_reff_plot_xaxis_label_fontsize- The fontsize for the x_axis labels on the rex and reff plots
@@ -34,6 +36,8 @@ A66
 18.generate_excel_output_file (if set to True)- The program will generate an output file containing the CPMG_Fit output files in a vertical column that can easily be plotted in excel (in case the user wishes to plot the Reff themselves)
 
 19.selective_groups (if set to True)- The program will read a selective group file to only generate CPMG_Fit files for the amino acids specified in the file.
+
+20.selective_group_plot (if set to True) - The program will only plot residues who were specified in the selective_group file ***generate_plots must also be true for this***
 
 20.Recommended Peaks (if set to True) - The program will filter and output amino acids with Rex and Reff values that are outside the standard deviation of the average.
 
