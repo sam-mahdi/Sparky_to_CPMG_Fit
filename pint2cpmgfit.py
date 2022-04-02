@@ -243,7 +243,7 @@ def selective_generator():
     with open('cpmg_fit_selective_input.txt','w') as cpmg_input:
         for peaks in list_of_peaks:
             residue=re.search('\d+',peaks)
-            residue_search=re.search('[A-Z]\d+',peaks)
+            residue_search=re.search('[A-Z]\d+[A-Z]*\d*-*[A-Z]*\d*',peaks)
             if residue_search.group(0) in selective_list:
                 cpmg_input.write(f'read {directory_pathway}/{peaks}_{identifier}.txt d {residue.group(0)} {quantum_type} {labeling} {temperature} {spectrometer_frequency} {time_value} @ c\n')
         cpmg_input.write(f'\nset m 3\nset k @ 0 500 u\nset k @ 1 0 f\nset k @ 2 0 f\nset p @ 0 0.98 f\nset p @ 1 0.02 u\nset c @ {labeling} 0 0 0 f\nset c @ {labeling} 1 0 1.0 u\nset c @ {labeling} 2 0 0 f\nset r @ @ @ @ @ @ 10 u g\nwrite > p\n min\nwrite > p\n write full.res p\n write full.dat d\n backup full.bk\n')
