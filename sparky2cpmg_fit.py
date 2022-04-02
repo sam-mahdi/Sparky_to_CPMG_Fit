@@ -193,17 +193,22 @@ def create_cpmg_fit_input_file():
         cpmg_input.write(f'\nset m 3\nset k @ 0 500 u\nset k @ 1 0 f\nset k @ 2 0 f\nset p @ 0 0.98 f\nset p @ 1 0.02 u\nset c @ {labeling} 0 0 0 f\nset c @ {labeling} 1 0 1.0 u\nset c @ {labeling} 2 0 0 f\nset r @ @ @ @ @ @ 10 u g\nwrite > p\n min\nwrite > p\n write full.res p\n write full.dat d\n backup full.bk\n')
 
 """plotting"""
+selective_list=[]
 
 def plot_data():
     import matplotlib
     import matplotlib.pyplot as plt
-
     plt.rc('font', size=font_size)
     counter=-1
     counter2=0
     counter3=0
     fig,axs=plt.subplots(4,4)
     for rex_values,labels,error_values in zip(duplicate_rex,list_of_peaks,rel_error_for_plotting):
+        if selective_group_plot is True:
+            label_search=re.search('[A-Z]\d+[A-Z]*\d*-*[A-Z]*\d*',labels)
+            if label_search is not None:
+                if label_search.group(0) not in selective_list:
+                    continue
         counter3+=1
         counter+=1
         if counter3 == 17:
@@ -233,10 +238,10 @@ def generate_for_excel_plotting():
                 excel_file.write(infile.read())
 
 def selective_generator():
+    global selective_list
     if os.path.isdir(working_directory+'/'+directory_pathway) is True:
         shutil.rmtree(working_directory+'/'+directory_pathway)
     os.makedirs(working_directory+'/'+directory_pathway)
-    selective_list=[]
     with open(selective_group_file) as file:
         for lines in file:
             if lines.split() == []:
@@ -244,7 +249,7 @@ def selective_generator():
             selective_list.append(lines.strip())
     os.chdir(working_directory+'/'+directory_pathway)
     for peaks,rex_values,error_values,rel_error in zip(list_of_peaks,duplicate_rex,duplicate_errors,rel_error_for_plotting):
-        residue_search=re.search('[A-Z]\d+',peaks)
+        residue_search=re.search('[A-Z]\d+[A-Z]*\d*-*[A-Z]*\d*',peaks)
         if residue_search.group(0) in selective_list:
             with open(peaks+'_'+identifier+'.txt','w') as CPMG_peaklist_files:
                 reff="{:.2f}".format([float(i) for i in rex_values][0]-[float(i) for i in rex_values][-1])
@@ -255,7 +260,7 @@ def selective_generator():
     with open('cpmg_fit_selective_input.txt','w') as cpmg_input:
         for peaks in list_of_peaks:
             residue=re.search('\d+',peaks)
-            residue_search=re.search('[A-Z]\d+',peaks)
+            residue_search=re.search('[A-Z]\d+[A-Z]*\d*-*[A-Z]*\d*',peaks)
             if residue_search.group(0) in selective_list:
                 cpmg_input.write(f'read {directory_pathway}/{peaks}_{identifier}.txt d {residue.group(0)} {quantum_type} {labeling} {temperature} {spectrometer_frequency} {time_value} @ c\n')
         cpmg_input.write(f'\nset m 3\nset k @ 0 500 u\nset k @ 1 0 f\nset k @ 2 0 f\nset p @ 0 0.98 f\nset p @ 1 0.02 u\nset c @ {labeling} 0 0 0 f\nset c @ {labeling} 1 0 1.0 u\nset c @ {labeling} 2 0 0 f\nset r @ @ @ @ @ @ 10 u g\nwrite > p\n min\nwrite > p\n write full.res p\n write full.dat d\n backup full.bk\n')
@@ -340,8 +345,6 @@ def rex_reff_excel_file(rex_list,reff_list,average_rex,rex_std_up,average_reff,r
         output_file.write(f'Amino Acid\tReff\tReff Average\tReff Upper Stdev\tAmino Acid\tRex\tRex Average\tRex Upper Stdev\n')
         for labels,rex_values,reff_values,rex_average,std_up_rex,reff_average,std_up_reff in zip(list_of_peaks,rex_list,reff_list,[average_rex]*len(rex_list),[rex_std_up]*len(rex_list),[average_reff]*len(reff_list),[reff_std_up]*len(reff_list)):
             output_file.write(f'{labels}\t{rex_values}\t{rex_average}\t{std_up_rex}\t{labels}\t{reff_values}\t{reff_average}\t{std_up_reff}\n')
-
-
 
 
 working_directory=os.getcwd()
