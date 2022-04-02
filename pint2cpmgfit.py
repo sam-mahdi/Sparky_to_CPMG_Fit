@@ -9,8 +9,8 @@ import shutil
 time_value=0.04
 error_min=0.04
 
-list_of_CPMG_frequencies=['0','50','100','100','150','200','300','400','600','800','1000','1000','1200','1400','1600']
-duplicate_frequencies=['100','1000']
+list_of_CPMG_frequencies=[]
+duplicate_frequencies=[]
 temperature='25'
 spectrometer_frequency='800'
 labeling='C13'
@@ -30,6 +30,21 @@ recommended_peaks=True
 only_show_good_reff_and_rex=True
 plot_rex_reff=False
 generate_excel__rex_reff_plot_file=True
+
+def get_compg_frq():
+    global list_of_CPMG_frequencies
+    global duplicate_frequencies
+    cpmg_frequencies=[]
+    duplicate_frq=[]
+    with open('nucpmg.list') as cpmg_file:
+        for lines in cpmg_file:
+            if float(lines.strip()) in cpmg_frequencies:
+                duplicate_frq.append(float(lines.strip()))
+            cpmg_frequencies.append(float(lines.strip()))  
+    for frequencies in sorted(cpmg_frequencies):   
+        list_of_CPMG_frequencies.append(str(frequencies))
+    for duplicates in sorted(duplicate_frq):
+        duplicate_frequencies.append(str(duplicates))
 
 def extract_parameters():
     index_values=[]
@@ -333,6 +348,7 @@ def rex_reff_excel_file(rex_list,reff_list,average_rex,rex_std_up,average_reff,r
 
 
 working_directory=os.getcwd()
+get_cpmg_frq()
 list_of_peaks,peak_height_list=extract_parameters()
 rex=create_rex()
 errors,rel_error_for_plotting=create_errors()
