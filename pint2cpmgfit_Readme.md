@@ -35,6 +35,8 @@ D45CG2-HG2
 
 19.selective_groups (if set to True)- The program will read a selective group file to only generate CPMG_Fit files for the amino acids specified in the file.
 
+20.selective_group_plot (if set to True) - The program will only plot residues who were specified in the selective_group file ***generate_plots must also be true for this***
+
 20.Recommended Peaks (if set to True) - The program will filter and output amino acids with Rex and Reff values that are outside the standard deviation of the average.
 
 21.only_show_good_reff_and_rex (if set to True) -  The program will filter and output amino acids with BOTH Rex and Reff values that are outside the standard deviation of the average.
