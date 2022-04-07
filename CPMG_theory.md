@@ -1,3 +1,5 @@
+***Info below is from this paper. Must read: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2717354/***
+
 Proteins can often accomadate multiple conformations. They may rapidly switch between these conformations. It's important to understand, the "time" it takes to switch to these conformations may vary. For example, if the rate of exchange is slow, then you will see 2 distinct peaks in your spectra, corresponding to a particular amino acid. These 2 peaks, represent the 2 different conformations the protein adopts. However, if the rate of exchange is faster (i.e. in the us-ms timescale), then you will not observe 2 peaks. Instead what will happen is the peak will simply broaden or weaken (sometimes disappear completely. It is often assumed peaks that do not show up in your spectra, are due to us-ms timescale motion).
 
 A CPMG experiment is a series of 180 degree pulses (refocusing pulses).
