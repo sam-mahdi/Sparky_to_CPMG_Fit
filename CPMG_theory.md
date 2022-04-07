@@ -19,4 +19,12 @@ This is the philosophy behind CPMG. As you increase the frequency of the 180 deg
 
 The "ncyc" value, is exactly that. The "n" nyumber of "cyc" cycles (of 180 degree pulses), within a particular constant time frame (time_t2). The more cycles (the more 180 degre pulses), the more intense the peak. These are converted to what's known as CPMG frequency (the frequency of CPMG pulses, same meaning, different value). As the CPMG frequency increases, the intensity of the peak increases. The Reff value that is then calculated, is the inverse of these intensity values. In other words, the higher the frequency, the lower the Reff value. ***This is of course only true for amino acids undergoing exchange on a us-ms timescale***. If the peak is not undergoing exchange on this time scale, there is no dependency on peak intensity and the 180 degree pulses (look above at when 2 states exchange slower), and thus the Reff value will not change throughout the experiment, and you will result in a flat line. 
 
+If Reff is plotted against the CPMG frequency, a slope is generated (for those that have exchange on us-ms). Thus, the correlation between intensity and CPMG frequency is demonstrated. Reff is correlated to the exchange between the 2 states, in addition to the population of the 2 states, and the difference between the chemical shifts of the 2 states. Thus, all these values can be derived through a non linear fitting of the Reff_CPMG curve. 
+
+```
+Reff=PaPb/Ke
+where Pa and Pb are the populations of the 2 states
+Ke is the rate of exchange between the 2 states
+```
+
 
