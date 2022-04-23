@@ -75,14 +75,24 @@ def create_rex():
     temp_rex=[]
     rex=[]
     for lines in peak_height_list:
+        skip_flag=False
         for next_line in lines:
             for heights in next_line.split():
                 counter+=1
                 if counter == 1:
                     first_value+=float(heights)
+                    if first_value < 0:
+                        first_value = 1
+                if float(heights) < 0:
+                    heights = 1
                 exchange_formula=-(1/time_value)*math.log(float(heights)/first_value)
+                if float(heights) < 0:
+                    exchange_formula=0
                 temp_rex.append(str(exchange_formula))
-        rex.append([' '.join(temp_rex)])
+        if skip_flag is True:
+            rex.append([' '.join(['1']*len(list_of_CPMG_frequencies))])
+        else:    
+            rex.append([' '.join(temp_rex)])
         temp_rex.clear()
         counter=0
         first_value=0
