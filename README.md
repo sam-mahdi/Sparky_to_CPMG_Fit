@@ -2,6 +2,7 @@
 Converts SPARKY peaklist files to CPMG_Fit format
 Plots Reff data individually for each amino acid, and calculates Rex to determine residues with good RD profiles
 Filters Reff and Rex data by showing amino acids that have values above the standard deviation of the average (can plot the Reff and Rex and Rex with their average and standard deviation)
+NOTE: If the intensity/volume is negative in the reference spectrum, all subsequent values for that amino acid will be ignored and a straight line will be displayed in plot. 
 
 Modify adjustable parameters. 
 
