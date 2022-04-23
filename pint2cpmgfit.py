@@ -31,6 +31,16 @@ only_show_good_reff_and_rex=True
 plot_rex_reff=False
 generate_excel__rex_reff_plot_file=True
 
+axis_labels_flag=True
+custom_plot_flag=True
+plot_size=(12,12)
+x_axis_fontsize=12
+y_axis_fontsize=14
+x_ticker_fontsize=10
+y_ticker_fontsize=10
+x_ticker_interval=200
+y_ticker_interval=1
+
 def get_compg_frq():
     global list_of_CPMG_frequencies
     global duplicate_frequencies
@@ -206,12 +216,14 @@ selective_list=[]
 def plot_data():
     import matplotlib
     import matplotlib.pyplot as plt
+    import numpy as np
+    from scipy.optimize import curve_fit
     plt.rc('font', size=font_size)
     counter=-1
     counter2=0
     counter3=0
-    fig,axs=plt.subplots(4,4)
-    for rex_values,labels,error_values in zip(duplicate_rex,list_of_peaks,rel_error_for_plotting):
+    fig,axs=plt.subplots(4,4, figsize=plot_size)
+    for rex_values,labels,error_values,data_error in zip(duplicate_rex,list_of_peaks,rel_error_for_plotting,duplicate_errors):
         if selective_group_plot is True:
             label_search=re.search('[A-Z]\d+[A-Z]*\d*-*[A-Z]*\d*',labels)
             if label_search is not None:
@@ -222,14 +234,33 @@ def plot_data():
         if counter3 == 17:
             fig.tight_layout()
             plt.show()
-            fig,axs=plt.subplots(4,4)
+            fig,axs=plt.subplots(4,4,figsize=plot_size)
             counter=0
             counter2=0
             counter3=1
         reff="{:.2f}".format([float(i) for i in rex_values][0]-[float(i) for i in rex_values][-1])
         error_plot=int(error_values*100)
-        axs[counter,counter2].plot([float(i) for i in list_of_CPMG_frequencies],[float(i) for i in rex_values])
+        x_axis=[float(i) for i in list_of_CPMG_frequencies]
+        y_axis=[float(i) for i in rex_values]
+        error_bars=[float(i) for i in data_error]
+        if custom_plot_flag is True:
+            axs[counter,counter2].plot(x_axis,y_axis,linestyle=':',color='blue')
+            axs[counter,counter2].plot(x_axis,y_axis,linestyle='',marker='o',color='red')
+            axs[counter,counter2].errorbar(x_axis,y_axis,yerr=error_bars)
+            #equation=lambda x,a,b: a*np.exp(-b*x)
+            #trendline,pcov=curve_fit(equation,  np.array(x_axis),  np.array(y_axis),p0=(0,0))
+            #axs[counter,counter2].plot(x_axis,equation(np.array(x_axis),*trendline.astype(int)))
+        else:
+            axs[counter,counter2].plot(x_axis,y_axis)
         axs[counter,counter2].set_title(f'{labels} Rex: {reff}\u00B1{error_plot}%')
+        if custom_plot_flag is True:
+            if axis_labels_flag is True:
+                axs[counter,counter2].set_xlabel('ν$_{CPMG}$ [HZ]',fontsize=x_axis_fontsize)
+                axs[counter,counter2].set_ylabel('R$_{2,eff}$ [$s^{-1}$]',fontsize=y_axis_fontsize)
+            axs[counter,counter2].tick_params(axis='x',labelsize=x_ticker_fontsize)
+            axs[counter,counter2].tick_params(axis='y',labelsize=y_ticker_fontsize)
+            #axs[counter,counter2].set_xticks((np.arange(min(x_axis),max(x_axis),x_ticker_interval)))
+            #axs[counter,counter2].set_yticks((np.arange(min(y_axis),max(y_axis),y_ticker_interval)))
         if counter == 3:
             counter=-1
             counter2+=1
