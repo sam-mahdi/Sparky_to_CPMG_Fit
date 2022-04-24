@@ -244,12 +244,10 @@ def plot_data():
         y_axis=[float(i) for i in rex_values]
         error_bars=[float(i) for i in data_error]
         if custom_plot_flag is True:
-            axs[counter,counter2].plot(x_axis,y_axis,linestyle=':',color='blue')
+            #axs[counter,counter2].plot(x_axis,y_axis,linestyle=':',color='blue')
             axs[counter,counter2].plot(x_axis,y_axis,linestyle='',marker='o',color='red')
-            axs[counter,counter2].errorbar(x_axis,y_axis,yerr=error_bars)
-            #equation=lambda x,a,b: a*np.exp(-b*x)
-            #trendline,pcov=curve_fit(equation,  np.array(x_axis),  np.array(y_axis),p0=(0,0))
-            #axs[counter,counter2].plot(x_axis,equation(np.array(x_axis),*trendline.astype(int)))
+            axs[counter,counter2].errorbar(x_axis,y_axis,yerr=error_bars,linestyle='')
+            axs[counter,counter2].plot(x_axis,np.poly1d(np.polyfit(np.array(x_axis),np.array(y_axis),2))(np.array(x_axis)),color='orange',linestyle='-')
         else:
             axs[counter,counter2].plot(x_axis,y_axis)
         axs[counter,counter2].set_title(f'{labels} Rex: {reff}\u00B1{error_plot}%')
