@@ -30,6 +30,7 @@ recommended_peaks=True
 only_show_good_reff_and_rex=True
 plot_rex_reff=False
 generate_excel__rex_reff_plot_file=True
+exponential_slope_check_flag=True
 
 axis_labels_flag=True
 custom_plot_flag=True
@@ -229,6 +230,13 @@ def plot_data():
             if label_search is not None:
                 if label_search.group(0) not in selective_list:
                     continue
+        x_axis=[float(i) for i in list_of_CPMG_frequencies]
+        y_axis=[float(i) for i in rex_values]
+        if exponential_slope_check_flag is True:
+            fit_array=np.poly1d(np.polyfit(np.array(x_axis),np.array(y_axis),2))(np.array(x_axis))
+            average=sum(fit_array)/len(fit_array)
+            if fit_array[-1] > average and fit_array[0] < fit_array[-1]:
+                continue            
         counter3+=1
         counter+=1
         if counter3 == 17:
@@ -240,8 +248,6 @@ def plot_data():
             counter3=1
         reff="{:.2f}".format([float(i) for i in rex_values][0]-[float(i) for i in rex_values][-1])
         error_plot=int(error_values*100)
-        x_axis=[float(i) for i in list_of_CPMG_frequencies]
-        y_axis=[float(i) for i in rex_values]
         error_bars=[float(i) for i in data_error]
         if custom_plot_flag is True:
             #axs[counter,counter2].plot(x_axis,y_axis,linestyle=':',color='blue')
