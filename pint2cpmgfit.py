@@ -42,7 +42,7 @@ y_ticker_fontsize=10
 x_ticker_interval=200
 y_ticker_interval=1
 
-def get_compg_frq():
+def get_cpmg_frq():
     global list_of_CPMG_frequencies
     global duplicate_frequencies
     cpmg_frequencies=[]
