@@ -30,7 +30,7 @@ recommended_peaks=True
 only_show_good_reff_and_rex=True
 plot_rex_reff=False
 generate_excel__rex_reff_plot_file=True
-exponential_slope_check_flag=True
+exponential_slope_check_flag=False
 
 axis_labels_flag=True
 custom_plot_flag=True
