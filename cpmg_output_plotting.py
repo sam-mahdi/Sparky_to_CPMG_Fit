@@ -69,7 +69,6 @@ def plot_cpmg_fit():
                         plot_counter_columns+=1
                         plot_counter_rows=0
                     if plot_counter_columns == 4:
-                        fig.tight_layout()
                         plt.show()
                         fig,axs=plt.subplots(4,4)
                         plot_counter_rows=0
@@ -129,7 +128,6 @@ def plot_cpmg_fit():
         axs[plot_counter_rows,plot_counter_columns].plot(cpfrq_list,expected_value_list,'b--',label='Fitted Values')
         axs[plot_counter_rows,plot_counter_columns].set_title(f'{" ".join(display)} R2: {"{:.2f}".format(R2)}' )
         axs.[plot_counter_rows,plot_counter_columns].legend()
-    fig.tight_layout()
     plt.show()
 
 def obtain_csb():
