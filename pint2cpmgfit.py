@@ -152,12 +152,12 @@ def duplicate_rex_combined():
             for duplicates in duplicate_frequencies:
                 counter+=1
                 dup_index=[i for i, x in enumerate(list_of_CPMG_frequencies) if x == duplicates]
-                duplicate_1_index=dup_index[0]+counter
-                duplicate_2_index=dup_index[1]+counter
+                duplicate_1_index=dup_index[0]
+                duplicate_2_index=dup_index[1]
                 average=(float(lines.split()[duplicate_1_index])+float(lines.split()[duplicate_2_index]))/2
-                new_list[duplicate_1_index]=average
-                del new_list[duplicate_2_index]
-            del new_list[0]
+                new_list[duplicate_1_index-counter]=average
+                del new_list[duplicate_2_index-counter]
+            del new_list[0]  
         new_rex.append(new_list)
     return new_rex
 
@@ -172,15 +172,14 @@ def duplicate_errors_combined():
             for duplicates in duplicate_frequencies:
                 counter+=1
                 dup_index=[i for i, x in enumerate(list_of_CPMG_frequencies) if x == duplicates]
-                duplicate_1_index=dup_index[0]+counter
-                duplicate_2_index=dup_index[1]+counter
+                duplicate_1_index=dup_index[0]
+                duplicate_2_index=dup_index[1]
                 average=(float(lines.split()[duplicate_1_index])+float(lines.split()[duplicate_2_index]))/2
-                new_list[duplicate_1_index]=average
-                del new_list[duplicate_2_index]
+                new_list[duplicate_1_index-counter]=average
+                del new_list[duplicate_2_index-counter]
             del new_list[0]
         new_errors.append(new_list)
     return new_errors
-
 
 def modify_frequency_list():
     global list_of_CPMG_frequencies
